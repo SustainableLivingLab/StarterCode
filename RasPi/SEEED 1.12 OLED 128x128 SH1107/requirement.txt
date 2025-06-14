@@ -1,0 +1,4 @@
+git+https://github.com/Seeed-Studio/grove.py.git
+adafruit-circuitpython-neopixel
+RPi.GPIO
+pillow
