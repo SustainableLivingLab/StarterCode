@@ -14,15 +14,17 @@ whole_note_duration = (60 / tempo) * 4
 
 def play_tone(frequency, duration_sec):
     if frequency == REST:
+        pwm.ChangeDutyCycle(0)
         time.sleep(duration_sec)
     else:
         pwm.ChangeFrequency(frequency)
-        pwm.start(50)
+        pwm.ChangeDutyCycle(50)
         time.sleep(duration_sec)
-        pwm.stop()
+        pwm.ChangeDutyCycle(0)
         time.sleep(0.02)
 
 try:
+    pwm.start(0)
     for note, divider in melody:
         duration = whole_note_duration / abs(divider)
         if divider < 0:
