@@ -1,4 +1,7 @@
-git+https://github.com/Seeed-Studio/grove.py.git
-adafruit-circuitpython-neopixel
 RPi.GPIO
 pillow
+luma.oled
+luma.core
+smbus2
+git+https://github.com/Seeed-Studio/grove.py.git
+adafruit-circuitpython-neopixel

@@ -3,9 +3,10 @@
 This guide covers how to set up a Python development environment on a Raspberry Pi running **Ubuntu 22.04+** for working with:
 
 * I2C Sensors
-* OLED Displays (SH1107/SSD1306)
+* OLED Displays (SH1107/SSD1306, with luma.oled support)
 * Cameras
 * NeoPixels (WS2812/WS2812B)
+* HX711 Load Cell Amplifier
 
 ---
 
@@ -67,13 +68,34 @@ pip install RPi.GPIO adafruit-blinka
 
 ## 💡 4. I2C Sensors and OLED Displays
 
-### SH1107 OLED (Seeed 1.12"):
+### SH1107 OLED (Seeed 1.12") with luma.oled:
+
+```bash
+pip install luma.oled pillow
+```
+
+#### Example usage (luma.oled):
+
+```python
+from luma.core.interface.serial import i2c
+from luma.oled.device import sh1107
+from luma.core.render import canvas
+from PIL import ImageFont
+
+serial = i2c(port=1, address=0x3C)
+oled = sh1107(serial, width=128, height=128, rotate=2)
+with canvas(oled) as draw:
+    font = ImageFont.load_default()
+    draw.text((10, 60), "Hello luma!", font=font, fill="white")
+```
+
+### SH1107 OLED (Seeed Grove.py):
 
 ```bash
 pip install git+https://github.com/Seeed-Studio/grove.py.git
 ```
 
-#### Example usage:
+#### Example usage (grove.py):
 
 ```python
 from grove.factory import Factory
@@ -96,7 +118,15 @@ pip install adafruit-circuitpython-dht adafruit-circuitpython-busdevice
 
 ---
 
-## 🌈 5. NeoPixels (WS2812)
+## ⚖️ 5. HX711 Load Cell Amplifier
+
+```bash
+pip install hx711
+```
+
+---
+
+## 🌈 6. NeoPixels (WS2812)
 
 ```bash
 pip install adafruit-circuitpython-neopixel rpi-ws281x
@@ -112,7 +142,7 @@ sudo ./venv/bin/python neopixel_test.py
 
 ---
 
-## 📷 6. Working with Raspberry Pi Camera
+## 📷 7. Working with Raspberry Pi Camera
 
 Ubuntu 22.04+ uses `libcamera`. To capture an image:
 
@@ -130,7 +160,7 @@ Then use `cv2.VideoCapture(0)` to access the camera.
 
 ---
 
-## 📦 7. Common Debugging Tools
+## 📦 8. Common Debugging Tools
 
 ```bash
 sudo apt install -y i2c-tools v4l-utils minicom net-tools
@@ -138,7 +168,7 @@ sudo apt install -y i2c-tools v4l-utils minicom net-tools
 
 ---
 
-## 🧹 8. Clean Up and Deactivate
+## 🧹 9. Clean Up and Deactivate
 
 To exit the virtual environment:
 
@@ -155,5 +185,13 @@ deactivate
 * `flask`, `socketio` (for web-based control)
 
 ---
+
+## 🚀 Demo Requirements
+
+To run the integrated weight display demo (load cell + OLED + NeoPixel):
+
+```bash
+pip install luma.oled pillow hx711 adafruit-circuitpython-neopixel
+```
 
 You're now ready to build Python-based hardware projects on Ubuntu-powered Raspberry Pi!
